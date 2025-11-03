@@ -1,0 +1,39 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node/Package
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Expo/React Native
+.expo/
+.expo-shared/
+dist/
+build/
+
+# iOS
+ios/build/
+ios/Pods/
+
+# Android
+android/build/
+android/app/build/
+
+# Env
+.env
+.env.*
+
+# Editors/IDE
+.idea/
+.vscode/
+
+# Coverage/Temp
+coverage/
+.coverage/
+.tmp/
+.temp/
+
+
