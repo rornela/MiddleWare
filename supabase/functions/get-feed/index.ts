@@ -14,11 +14,9 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 type Json = Record<string, unknown> | Array<unknown> | string | number | boolean | null;
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
-const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
+const SUPABASE_URL = Deno.env.get("https://mhbhunserxitboepzysy.supabase.co);
+const SUPABASE_ANON_KEY = Deno.env.get("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oYmh1bnNlcnhpdGJvZXB6eXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNjE0NTEsImV4cCI6MjA3NzczNzQ1MX0.TM1kqYYy3ew3M-bTeb2aaVMXTr-g2fMDGcp0EbGAnX8Y");
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.error("Missing required environment variables for Supabase.");
 }
 
@@ -45,9 +43,6 @@ serve(async (req) => {
       global: { headers: { Authorization: authHeader } },
     });
 
-    // Admin client for DB operations regardless of RLS (service role)
-    const adminClient = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
-
     // Identify user
     const { data: userRes, error: userErr } = await userClient.auth.getUser();
     if (userErr || !userRes?.user) {
@@ -59,7 +54,7 @@ serve(async (req) => {
     const userId = userRes.user.id;
 
     // Read user preferences
-    const { data: prefRow, error: prefErr } = await adminClient
+    const { data: prefRow, error: prefErr } = await userClient
       .from("user_feed_preferences")
       .select("preferences")
       .eq("user_id", userId)
@@ -74,7 +69,7 @@ serve(async (req) => {
     // Strategy implementations
     const strategies: Record<string, () => Promise<Response>> = {
       custom: async () => {
-        const { data, error } = await adminClient.rpc("get_custom_ranked_feed", {
+        const { data, error } = await userClient.rpc("get_custom_ranked_feed", {
           requesting_user_id: userId,
           p_limit: limit,
           p_offset: offset,
@@ -109,7 +104,7 @@ serve(async (req) => {
         }
       },
       chronological: async () => {
-        const { data, error } = await adminClient
+        const { data, error } = await userClient
           .from("posts")
           .select(
             "id, author_id, text_content, created_at, media:media(type, mux_playback_id, storage_path)"
