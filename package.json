@@ -1,0 +1,14 @@
+{
+  "name": "middleware-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:rls": "node scripts/rls-test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
+
+
