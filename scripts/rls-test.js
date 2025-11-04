@@ -1,4 +1,5 @@
 // RLS sanity tests for profiles and posts
+import 'dotenv/config';
 // Usage:
 //   SUPABASE_URL=... SUPABASE_ANON_KEY=... \
 //   TEST_USER_A_EMAIL=... TEST_USER_A_PASSWORD=... \
